@@ -1,0 +1,44 @@
+<% 
+my_pixiv_id = 12345678
+dates = ["20131229", "20131230", "20131231"]
+%>
+
+<div class="container">
+
+<ul class="nav nav-tabs" style="margin-bottom:15px;">
+<% dates.each do |date| %>
+  <li<% if date==dates[0] %> class="active"<% end %>><a href="#<%= date %>" data-toggle="tab"><%= date %></a></li>
+<% end %>
+</ul>
+
+<div class="tab-content">
+<% dates.each do |date| %>
+  <div class="tab-pane<% if date==dates[0]%> active<% end %>" id="<%= date %>">
+  <% @followings.each do |following| %>
+    <% if following.follower_user_id == my_pixiv_id %>
+      <% @circles.each do |circle| %>
+        <% if date == circle.attend_date %>
+          <% if following.following_user_id == circle.user_id %>
+            <p>
+            <b><%= circle.space_area %><%= circle.space_block %><%= circle.space_no %><%= circle.space_ab %>
+            <a href="http://www.pixiv.net/member_event.php?id=<%= circle.user_id %>&event_id=3285" target="_blank">
+              <%= circle.circle_name %>
+            </a></b><br />
+            <% @books.each do |book| %>
+              <% if book.circle_name == circle.circle_name %>
+                ・<a href="<%= book.url %>" target="_blank"><%= book.book_title %></a>
+                &nbsp;<%= book.price %>&nbsp;<%= book.book_size %>&nbsp;<%= book.publish_date %><br />
+              <% end %>
+            <% end %>
+            </p>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  </div>
+<% end %>
+</div>
+
+</div>
+
